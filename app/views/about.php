@@ -1,0 +1,3 @@
+<?php
+// About view template
+?>

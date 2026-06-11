@@ -1,0 +1,3 @@
+<?php
+// Contact view template
+?>

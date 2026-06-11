@@ -1,0 +1,3 @@
+<?php
+// Admin events page
+?>

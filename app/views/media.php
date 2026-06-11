@@ -1,0 +1,3 @@
+<?php
+// Media view template
+?>

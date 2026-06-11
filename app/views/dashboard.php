@@ -1,0 +1,3 @@
+<?php
+// Dashboard view template
+?>

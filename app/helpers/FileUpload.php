@@ -1,0 +1,3 @@
+<?php
+// File upload helpers
+?>

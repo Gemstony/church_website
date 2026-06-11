@@ -1,0 +1,5 @@
+/* Custom CSS using CSS variables (primary/secondary) */
+:root {
+  --primary: #2c3e50;
+  --secondary: #e74c3c;
+}

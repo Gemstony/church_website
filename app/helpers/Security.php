@@ -1,0 +1,3 @@
+<?php
+// CSRF, XSS protection
+?>
