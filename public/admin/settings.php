@@ -46,7 +46,6 @@ include __DIR__ . '/includes/header.php';
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Site Settings</h1>
 </div>
-    <h1>Site Settings</h1>
     <?php if ($success): ?>
         <div class="alert alert-success"><?php echo Security::escape($success); ?></div>
     <?php endif; ?>

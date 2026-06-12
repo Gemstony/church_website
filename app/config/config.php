@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../vendor/autoload.php'; 
 // app/config/config.php
 function loadEnv($path) {
     if (!file_exists($path)) {

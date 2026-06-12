@@ -18,14 +18,46 @@ class ContactMessage {
     /**
      * Fetch all messages (for admin later)
      */
-    public static function getAll($limit = 100, $offset = 0) {
-        $db = Database::getConnection();
-        $stmt = $db->prepare("SELECT * FROM contact_messages ORDER BY submitted_at DESC LIMIT :limit OFFSET :offset");
-        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
-        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll();
+public static function getAll($search = '', $page = 1, $perPage = 20) {
+    $db = Database::getConnection();
+    $offset = ($page - 1) * $perPage;
+    
+    $sql = "SELECT * FROM contact_messages";
+    $params = [];
+    if (!empty($search)) {
+        $sql .= " WHERE name LIKE :search OR email LIKE :search OR message LIKE :search";
+        $params[':search'] = "%$search%";
     }
+    $sql .= " ORDER BY submitted_at DESC LIMIT :limit OFFSET :offset";
+    
+    $stmt = $db->prepare($sql);
+    foreach ($params as $key => $val) {
+        $stmt->bindValue($key, $val);
+    }
+    $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+    $messages = $stmt->fetchAll();
+    
+    // Get total count
+    $countSql = "SELECT COUNT(*) as total FROM contact_messages";
+    if (!empty($search)) {
+        $countSql .= " WHERE name LIKE :search OR email LIKE :search OR message LIKE :search";
+    }
+    $countStmt = $db->prepare($countSql);
+    if (!empty($search)) {
+        $countStmt->bindValue(':search', "%$search%");
+    }
+    $countStmt->execute();
+    $total = $countStmt->fetch()['total'];
+    
+    return [
+        'messages' => $messages,
+        'total' => $total,
+        'page' => $page,
+        'perPage' => $perPage
+    ];
+}
     
     /**
      * Mark message as read
@@ -34,5 +66,23 @@ class ContactMessage {
         $db = Database::getConnection();
         $stmt = $db->prepare("UPDATE contact_messages SET is_read = 1 WHERE id = :id");
         return $stmt->execute([':id' => $id]);
+    }
+
+    /**
+     * Delete a message
+     */
+    public static function delete($id) {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("DELETE FROM contact_messages WHERE id = :id");
+        return $stmt->execute([':id' => $id]);
+    }
+    
+    /**
+     * Get unread message count (for admin dashboard)
+     */
+    public static function getUnreadCount() {
+        $db = Database::getConnection();
+        $stmt = $db->query("SELECT COUNT(*) as count FROM contact_messages WHERE is_read = 0");
+        return $stmt->fetch()['count'];
     }
 }
