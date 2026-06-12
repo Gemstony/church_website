@@ -60,7 +60,10 @@ include __DIR__ . '/../app/views/header.php';
         font-size: 24px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
-.play-icon {
+    .gallery-card .video-wrapper {
+        position: relative;
+    }
+    .play-icon {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -70,6 +73,7 @@ include __DIR__ . '/../app/views/header.php';
         text-shadow: 0 0 10px black;
         pointer-events: none;
         opacity: 0.9;
+        z-index: 2;
     }
     @media (max-width: 768px) {
         .gallery-card img, .gallery-card video {
@@ -109,7 +113,7 @@ include __DIR__ . '/../app/views/header.php';
                     <?php if ($item['file_type'] === 'image'): ?>
                         <img src="<?php echo APP_URL . '/' . $item['file_path']; ?>" alt="<?php echo Security::escape($item['title']); ?>" loading="lazy">
                     <?php else: ?>
-                        <div style="position: relative;">
+                        <div class="video-wrapper">
                             <video src="<?php echo APP_URL . '/' . $item['file_path']; ?>" preload="metadata"></video>
                             <i class="fas fa-play-circle play-icon"></i>
                         </div>

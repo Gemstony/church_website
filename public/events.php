@@ -123,11 +123,7 @@ include __DIR__ . '/../app/views/header.php';
                         alert(info.event.title + '\n' + (info.event.extendedProps.description || ''));
                     }
                 },
-                loading: function (isLoading) {
-                    if (isLoading) {
-                        document.getElementById('calendar').innerHTML = '<div class="text-center p-5">Loading events...</div>';
-                    }
-                }
+                
             });
             calendar.render();
         });
