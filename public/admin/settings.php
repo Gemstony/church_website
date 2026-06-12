@@ -100,9 +100,7 @@ include __DIR__ . '/includes/header.php';
                             <div><img src="<?php echo APP_URL . '/' . $settings['logo_path']; ?>" style="max-height:100px">
                             </div><?php endif; ?><input type="file" name="logo" class="form-control" accept="image/*">
                     </div>
-                    <div class="mb-3"><label>Footer Text</label><input type="text" name="footer_text"
-                            class="form-control"
-                            value="<?php echo Security::escape($settings['footer_text'] ?? ''); ?>"></div>
+                    <div class="mb-3"><label>Footer Text</label><textarea name="footer_text" class="form-control" rows="3"><?php echo Security::escape($settings['footer_text'] ?? ''); ?></textarea></div>
                 </div>
             </div>
         </div>

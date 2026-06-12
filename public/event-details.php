@@ -86,6 +86,9 @@ include __DIR__ . '/../app/views/header.php';
                         <a href="<?php echo APP_URL; ?>/login.php">Login</a> or <a
                             href="<?php echo APP_URL; ?>/signup.php">create an account</a> to register for this event.
                     </div>
+                    <a href="<?php echo APP_URL; ?>/events.php" class="btn btn-secondary ">
+                        Back to Events
+                    </a>
                 <?php endif; ?>
             </div>
         </div>

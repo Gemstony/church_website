@@ -23,6 +23,7 @@ include __DIR__ . '/../app/views/header.php';
     .event-card {
         transition: transform 0.2s;
         margin-bottom: 1.5rem;
+        
     }
     .event-card:hover {
         transform: translateY(-5px);
@@ -60,7 +61,7 @@ include __DIR__ . '/../app/views/header.php';
             </div>
         <?php else: ?>
             <?php foreach ($upcomingEvents as $event): ?>
-                <div class="col-md-6 col-lg-4">
+                <div class="col-md-6 col-lg-4 mb-4">
                     <a href="event-details.php?id=<?php echo $event['id']; ?>" class="text-decoration-none">
                         <div class="card event-card shadow-sm h-100">
                             <!-- Registration Badge -->

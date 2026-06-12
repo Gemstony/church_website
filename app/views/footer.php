@@ -1,9 +1,10 @@
 </main>
-<footer class="bg-light text-center text-muted py-3 mt-5">
+<footer class="bg-light text-muted py-3 mt-5">
     <div class="container">
         <?php 
-        $footerText = Setting::get('footer_text', '© 2025 Our Church. All rights reserved.');
-        echo Security::escape($footerText);
+        $footerContent = Setting::get('footer_text', '© 2025 Our Church. All rights reserved.');
+        // Do NOT escape – allow HTML (admin trusted)
+        echo $footerContent;
         ?>
     </div>
 </footer>

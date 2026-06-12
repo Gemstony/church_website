@@ -282,15 +282,6 @@ include __DIR__ . '/../app/views/header.php';
     </div>
 </div>
 
-<!-- Newsletter -->
-<div class="container my-5">
-    <div class="newsletter-section text-center">
-        <h3><i class="fas fa-envelope"></i> Stay Connected</h3>
-        <p>Subscribe for updates.</p>
-        <form id="newsletterForm" class="row g-3 justify-content-center"><div class="col-md-5 col-8"><input type="email" class="form-control form-control-lg" placeholder="Your email" required id="newsletterEmail"></div><div class="col-md-2 col-4"><button type="submit" class="btn btn-light btn-lg">Subscribe</button></div></form>
-        <div id="newsletterMsg" class="mt-3"></div>
-    </div>
-</div>
 
 <!-- Social Icons (if any) -->
 <?php if (!empty($settings['facebook_url']) || !empty($settings['youtube_url'])): ?>
