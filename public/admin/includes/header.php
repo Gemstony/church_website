@@ -105,6 +105,7 @@ require_once __DIR__ . '/../../../app/helpers/Security.php';
             <li class="nav-item"><a class="nav-link text-dark" href="media.php"><i class="fas fa-photo-video me-2"></i> Media Gallery</a></li>
             <li class="nav-item"><a class="nav-link text-dark" href="messages.php"><i class="fas fa-envelope me-2"></i> Contact Messages</a></li>
             <li class="nav-item"><a class="nav-link text-dark" href="reports.php"><i class="fas fa-chart-line me-2"></i> Reports</a></li>
+            <li class="nav-item"><a class="nav-link text-dark" href="slides.php"><i class="fas fa-image me-2"></i> Slider</a></li>
             <li class="nav-item"><a class="nav-link text-dark" href="settings.php"><i class="fas fa-cog me-2"></i> Site Settings</a></li>
             <li class="nav-item"><a class="nav-link text-dark" href="<?php echo APP_URL; ?>/logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
         </ul>

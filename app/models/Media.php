@@ -1,11 +1,13 @@
 <?php
 require_once __DIR__ . '/../config/database.php';
 
-class Media {
+class Media
+{
     /**
      * Get all media items
      */
-    public static function getAll($limit = 50, $offset = 0) {
+    public static function getAll($limit = 50, $offset = 0)
+    {
         $db = Database::getConnection();
         $stmt = $db->prepare("SELECT * FROM media_gallery ORDER BY uploaded_at DESC LIMIT :limit OFFSET :offset");
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
@@ -13,22 +15,24 @@ class Media {
         $stmt->execute();
         return $stmt->fetchAll();
     }
-    
+
     /**
      * Get recent media for homepage
      */
-    public static function getRecent($limit = 6) {
+    public static function getRecent($limit = 4)
+    {
         $db = Database::getConnection();
         $stmt = $db->prepare("SELECT * FROM media_gallery ORDER BY uploaded_at DESC LIMIT :limit");
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll();
     }
-    
+
     /**
      * Insert new media record
      */
-    public static function create($title, $description, $filePath, $fileType, $uploadedBy) {
+    public static function create($title, $description, $filePath, $fileType, $uploadedBy)
+    {
         $db = Database::getConnection();
         $stmt = $db->prepare("INSERT INTO media_gallery (title, description, file_path, file_type, uploaded_by) VALUES (:title, :description, :file_path, :file_type, :uploaded_by)");
         return $stmt->execute([
@@ -39,11 +43,12 @@ class Media {
             ':uploaded_by' => $uploadedBy
         ]);
     }
-    
+
     /**
      * Delete media (admin only)
      */
-    public static function delete($id) {
+    public static function delete($id)
+    {
         $db = Database::getConnection();
         // First get file path to delete from disk
         $stmt = $db->prepare("SELECT file_path FROM media_gallery WHERE id = :id");

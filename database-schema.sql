@@ -120,6 +120,19 @@ CREATE TABLE `password_resets` (
 ALTER TABLE `event_registrations` 
 ADD COLUMN `phone` VARCHAR(20) DEFAULT NULL AFTER `user_id`;
 
+
+CREATE TABLE IF NOT EXISTS `slides` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `image` VARCHAR(255) NOT NULL,
+  `title` VARCHAR(200) DEFAULT NULL,
+  `subtitle` TEXT DEFAULT NULL,
+  `btn_text` VARCHAR(100) DEFAULT NULL,
+  `btn_link` VARCHAR(255) DEFAULT NULL,
+  `order` INT DEFAULT 0,
+  `is_active` TINYINT(1) DEFAULT 1,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
 -- Default settings
 
 INSERT INTO `settings` (`setting_key`, `setting_value`, `setting_type`) VALUES

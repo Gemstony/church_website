@@ -160,16 +160,17 @@ class Event
      * Get registration status for multiple events for a user
      * Returns associative array event_id => bool
      */
-    public static function getUserRegistrationStatuses($eventIds, $userId)
-    {
-        if (empty($eventIds))
-            return [];
-        $placeholders = implode(',', array_fill(0, count($eventIds), '?'));
-        $db = Database::getConnection();
-        $stmt = $db->prepare("SELECT DISTINCT event_id FROM event_registrations WHERE event_id IN ($placeholders) AND user_id = ?");
-        $params = array_merge($eventIds, [$userId]);
-        $stmt->execute($params);
-        $registered = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        return array_fill_keys($registered, true);
-    }
+/**
+ * Get registration status for multiple events
+ */
+public static function getUserRegistrationStatuses($eventIds, $userId) {
+    if (empty($eventIds)) return [];
+    $placeholders = implode(',', array_fill(0, count($eventIds), '?'));
+    $db = Database::getConnection();
+    $stmt = $db->prepare("SELECT DISTINCT event_id FROM event_registrations WHERE event_id IN ($placeholders) AND user_id = ?");
+    $params = array_merge($eventIds, [$userId]);
+    $stmt->execute($params);
+    $registered = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    return array_fill_keys($registered, true);
+}
 }
