@@ -54,16 +54,16 @@ class Event
     /**
      * Create or update event (admin later)
      */
-/**
- * Create or update event (admin)
- */
-public static function save($data)
-{
-    $db = Database::getConnection();
-    
-    if (isset($data['id']) && $data['id']) {
-        // UPDATE: only include fields that exist in the table
-        $sql = "UPDATE events SET 
+    /**
+     * Create or update event (admin)
+     */
+    public static function save($data)
+    {
+        $db = Database::getConnection();
+
+        if (isset($data['id']) && $data['id']) {
+            // UPDATE: only include fields that exist in the table
+            $sql = "UPDATE events SET 
                 title = :title, 
                 description = :description, 
                 event_date = :event_date, 
@@ -71,32 +71,32 @@ public static function save($data)
                 location = :location, 
                 image = :image 
                 WHERE id = :id";
-        $stmt = $db->prepare($sql);
-        return $stmt->execute([
-            ':id' => $data['id'],
-            ':title' => $data['title'],
-            ':description' => $data['description'],
-            ':event_date' => $data['event_date'],
-            ':event_end_date' => $data['event_end_date'],
-            ':location' => $data['location'],
-            ':image' => $data['image']  // can be null
-        ]);
-    } else {
-        // INSERT: include created_by
-        $sql = "INSERT INTO events (title, description, event_date, event_end_date, location, image, created_by) 
+            $stmt = $db->prepare($sql);
+            return $stmt->execute([
+                ':id' => $data['id'],
+                ':title' => $data['title'],
+                ':description' => $data['description'],
+                ':event_date' => $data['event_date'],
+                ':event_end_date' => $data['event_end_date'],
+                ':location' => $data['location'],
+                ':image' => $data['image']  // can be null
+            ]);
+        } else {
+            // INSERT: include created_by
+            $sql = "INSERT INTO events (title, description, event_date, event_end_date, location, image, created_by) 
                 VALUES (:title, :description, :event_date, :event_end_date, :location, :image, :created_by)";
-        $stmt = $db->prepare($sql);
-        return $stmt->execute([
-            ':title' => $data['title'],
-            ':description' => $data['description'],
-            ':event_date' => $data['event_date'],
-            ':event_end_date' => $data['event_end_date'],
-            ':location' => $data['location'],
-            ':image' => $data['image'],
-            ':created_by' => $data['created_by']
-        ]);
+            $stmt = $db->prepare($sql);
+            return $stmt->execute([
+                ':title' => $data['title'],
+                ':description' => $data['description'],
+                ':event_date' => $data['event_date'],
+                ':event_end_date' => $data['event_end_date'],
+                ':location' => $data['location'],
+                ':image' => $data['image'],
+                ':created_by' => $data['created_by']
+            ]);
+        }
     }
-}
 
 
     /**
@@ -106,7 +106,7 @@ public static function save($data)
     {
         $db = Database::getConnection();
         $stmt = $db->prepare("
-        SELECT u.id, u.full_name, u.email, u.profile_pic, er.registered_at
+        SELECT u.id, u.full_name, u.email, u.profile_pic, er.phone, er.registered_at
         FROM event_registrations er
         JOIN users u ON er.user_id = u.id
         WHERE er.event_id = :event_id
@@ -142,5 +142,34 @@ public static function save($data)
         }
         $stmt = $db->prepare("DELETE FROM events WHERE id = :id");
         return $stmt->execute([':id' => $id]);
+    }
+
+
+    /**
+     * Check if a user is registered for an event
+     */
+    public static function isUserRegistered($eventId, $userId)
+    {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("SELECT id FROM event_registrations WHERE event_id = :event_id AND user_id = :user_id");
+        $stmt->execute([':event_id' => $eventId, ':user_id' => $userId]);
+        return $stmt->fetch() ? true : false;
+    }
+
+    /**
+     * Get registration status for multiple events for a user
+     * Returns associative array event_id => bool
+     */
+    public static function getUserRegistrationStatuses($eventIds, $userId)
+    {
+        if (empty($eventIds))
+            return [];
+        $placeholders = implode(',', array_fill(0, count($eventIds), '?'));
+        $db = Database::getConnection();
+        $stmt = $db->prepare("SELECT DISTINCT event_id FROM event_registrations WHERE event_id IN ($placeholders) AND user_id = ?");
+        $params = array_merge($eventIds, [$userId]);
+        $stmt->execute($params);
+        $registered = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        return array_fill_keys($registered, true);
     }
 }

@@ -117,7 +117,8 @@ CREATE TABLE `password_resets` (
   INDEX `idx_email` (`email`)
 );
 
-
+ALTER TABLE `event_registrations` 
+ADD COLUMN `phone` VARCHAR(20) DEFAULT NULL AFTER `user_id`;
 
 -- Default settings
 

@@ -273,7 +273,7 @@ include __DIR__ . '/includes/header.php';
                 } else {
                     let html = '<ul class="list-group">';
                     data.forEach(reg => {
-                        html += `<li class="list-group-item"><strong>${escapeHtml(reg.full_name)}</strong><br><small>${escapeHtml(reg.email)}</small><br><small class="text-muted">Registered: ${new Date(reg.registered_at).toLocaleString()}</small></li>`;
+                        html += `<li class="list-group-item"><strong>${escapeHtml(reg.full_name)}</strong><br><small>${escapeHtml(reg.phone)}</small><br><small>${escapeHtml(reg.email)}</small><br><small class="text-muted">Registered: ${new Date(reg.registered_at).toLocaleString()}</small></li>`;
                     });
                     html += '</ul>';
                     listDiv.innerHTML = html;

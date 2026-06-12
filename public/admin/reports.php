@@ -107,7 +107,7 @@ if ($export_type) {
     $title = '';
     
     if ($export_type === 'members') {
-        $stmt = $db->query("SELECT id, full_name, email, role, is_active, created_at FROM users ORDER BY created_at DESC");
+        $stmt = $db->query("SELECT id, full_name, email, role, is_active, created_at FROM users WHERE role = 'member' ORDER BY created_at DESC");
         $rows = $stmt->fetchAll();
         $headers = ['Full Name', 'Email', 'Role', 'Active', 'Registered Date'];
         foreach ($rows as $r) {
@@ -145,7 +145,7 @@ if ($export_type) {
             exit;
         }
         $stmt = $db->prepare("
-            SELECT e.title as event_title, u.full_name, u.email, er.registered_at
+            SELECT e.title as event_title, u.full_name, u.email, er.phone, er.registered_at
             FROM event_registrations er
             JOIN events e ON er.event_id = e.id
             JOIN users u ON er.user_id = u.id
@@ -159,11 +159,12 @@ if ($export_type) {
             header('Location: reports.php');
             exit;
         }
-        $headers = ['Event Title', 'Member Name', 'Member Email', 'Registered At'];
+        $headers = ['Event Title', 'Member Name', 'Phone','Member Email', 'Registered At'];
         foreach ($rows as $r) {
             $data[] = [
                 $r['event_title'],
                 $r['full_name'],
+                $r['phone'],
                 $r['email'],
                 $r['registered_at']
             ];
@@ -227,7 +228,7 @@ unset($_SESSION['report_error'], $_SESSION['report_success']);
                 <p>Export complete list of all registered members.</p>
                 <div class="d-flex gap-2">
                     <a href="?export=members&format=csv&csrf_token=<?php echo $csrf_token; ?>" class="btn btn-primary">CSV</a>
-                    <a href="?export=members&format=pdf&csrf_token=<?php echo $csrf_token; ?>" class="btn btn-secondary">PDF</a>
+                    <a href="?export=members&format=pdf&csrf_token=<?php echo $csrf_token; ?>" class="btn btn-danger">PDF</a>
                 </div>
             </div>
         </div>
@@ -241,7 +242,7 @@ unset($_SESSION['report_error'], $_SESSION['report_success']);
                 <p>Export all events with dates and locations.</p>
                 <div class="d-flex gap-2">
                     <a href="?export=events&format=csv&csrf_token=<?php echo $csrf_token; ?>" class="btn btn-success">CSV</a>
-                    <a href="?export=events&format=pdf&csrf_token=<?php echo $csrf_token; ?>" class="btn btn-secondary">PDF</a>
+                    <a href="?export=events&format=pdf&csrf_token=<?php echo $csrf_token; ?>" class="btn btn-danger">PDF</a>
                 </div>
             </div>
         </div>
@@ -270,7 +271,7 @@ unset($_SESSION['report_error'], $_SESSION['report_success']);
                     </div>
                     <div class="d-flex gap-2">
                         <button type="submit" name="format" value="csv" class="btn btn-info">CSV</button>
-                        <button type="submit" name="format" value="pdf" class="btn btn-secondary">PDF</button>
+                        <button type="submit" name="format" value="pdf" class="btn btn-danger">PDF</button>
                     </div>
                 </form>
                 <?php if (empty($events)): ?>
@@ -288,7 +289,7 @@ unset($_SESSION['report_error'], $_SESSION['report_success']);
                 <p>Export list of members who have uploaded CVs.</p>
                 <div class="d-flex gap-2">
                     <a href="?export=cvs&format=csv&csrf_token=<?php echo $csrf_token; ?>" class="btn btn-warning">CSV</a>
-                    <a href="?export=cvs&format=pdf&csrf_token=<?php echo $csrf_token; ?>" class="btn btn-secondary">PDF</a>
+                    <a href="?export=cvs&format=pdf&csrf_token=<?php echo $csrf_token; ?>" class="btn btn-danger">PDF</a>
                 </div>
             </div>
         </div>

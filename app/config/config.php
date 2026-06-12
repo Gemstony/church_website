@@ -1,4 +1,8 @@
 <?php
+if (ob_get_level()) ob_end_clean();
+ob_start();
+
+
 require_once __DIR__ . '/../../vendor/autoload.php'; 
 // app/config/config.php
 function loadEnv($path) {
@@ -49,3 +53,5 @@ if (APP_ENV === 'development') {
 // This ensures Security and Auth are always available
 require_once __DIR__ . '/../helpers/Security.php';
 require_once __DIR__ . '/../helpers/Auth.php';
+
+ob_end_flush();

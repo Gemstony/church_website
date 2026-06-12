@@ -9,7 +9,7 @@ include __DIR__ . '/../app/views/header.php';
 ?>
 
 <div class="row">
-    <div class="col-lg-8 mx-auto">
+    <div class="col-xl mx-auto">
         <div class="card shadow-sm border-0">
             <div class="card-body p-5">
                 <?php echo $aboutContent; ?>
