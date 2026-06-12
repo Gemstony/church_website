@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../app/config/config.php';
 require_once __DIR__ . '/../app/helpers/Security.php';
+require_once __DIR__ . '/../app/helpers/Auth.php';
 require_once __DIR__ . '/../app/models/Media.php';
 
 $mediaItems = Media::getAll();
@@ -28,6 +29,7 @@ include __DIR__ . '/../app/views/header.php';
         height: 220px;
         object-fit: cover;
         display: block;
+        pointer-events: none; /* makes whole card clickable */
     }
     .gallery-caption {
         padding: 12px;
@@ -58,6 +60,17 @@ include __DIR__ . '/../app/views/header.php';
         font-size: 24px;
         box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
+    .play-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 48px;
+        color: white;
+        text-shadow: 0 0 10px black;
+        pointer-events: none;
+        opacity: 0.9;
+    }
     @media (max-width: 768px) {
         .gallery-card img, .gallery-card video {
             height: 180px;
@@ -87,11 +100,19 @@ include __DIR__ . '/../app/views/header.php';
     <div class="row g-4">
         <?php foreach ($mediaItems as $item): ?>
             <div class="col-md-6 col-lg-4">
-                <div class="gallery-card" data-bs-toggle="modal" data-bs-target="#mediaModal" data-title="<?php echo Security::escape($item['title']); ?>" data-description="<?php echo Security::escape($item['description']); ?>" data-file="<?php echo APP_URL . '/' . $item['file_path']; ?>" data-type="<?php echo $item['file_type']; ?>" data-id="<?php echo $item['id']; ?>">
+                <div class="gallery-card" data-bs-toggle="modal" data-bs-target="#mediaModal" 
+                     data-title="<?php echo Security::escape($item['title']); ?>" 
+                     data-description="<?php echo Security::escape($item['description']); ?>" 
+                     data-file="<?php echo APP_URL . '/' . $item['file_path']; ?>" 
+                     data-type="<?php echo $item['file_type']; ?>" 
+                     data-id="<?php echo $item['id']; ?>">
                     <?php if ($item['file_type'] === 'image'): ?>
                         <img src="<?php echo APP_URL . '/' . $item['file_path']; ?>" alt="<?php echo Security::escape($item['title']); ?>" loading="lazy">
                     <?php else: ?>
-                        <video src="<?php echo APP_URL . '/' . $item['file_path']; ?>" preload="metadata"></video>
+                        <div style="position: relative;">
+                            <video src="<?php echo APP_URL . '/' . $item['file_path']; ?>" preload="metadata"></video>
+                            <i class="fas fa-play-circle play-icon"></i>
+                        </div>
                     <?php endif; ?>
                     <div class="gallery-caption">
                         <h5><?php echo Security::escape($item['title']); ?></h5>
@@ -103,7 +124,7 @@ include __DIR__ . '/../app/views/header.php';
     </div>
 <?php endif; ?>
 
-<!-- Lightbox Modal -->
+<!-- Lightbox Modal (improved with video stop) -->
 <div class="modal fade" id="mediaModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
@@ -162,7 +183,7 @@ include __DIR__ . '/../app/views/header.php';
 <?php endif; ?>
 
 <script>
-// Lightbox modal population
+// Lightbox modal population with improved video stop
 const mediaModal = document.getElementById('mediaModal');
 if (mediaModal) {
     mediaModal.addEventListener('show.bs.modal', function (event) {
@@ -187,6 +208,17 @@ if (mediaModal) {
         if (deleteBtn) {
             deleteBtn.dataset.id = id;
         }
+    });
+    
+    // Stop video playback when modal is closed
+    mediaModal.addEventListener('hidden.bs.modal', function () {
+        const mediaContainer = document.getElementById('modalMedia');
+        const video = mediaContainer.querySelector('video');
+        if (video) {
+            video.pause();
+            video.currentTime = 0;
+        }
+        mediaContainer.innerHTML = ''; // Clear to release resources
     });
 }
 
