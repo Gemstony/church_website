@@ -18,39 +18,55 @@ class ContactMessage {
     /**
      * Fetch all messages (for admin later)
      */
-public static function getAll($search = '', $page = 1, $perPage = 20) {
+public static function getAll($search = '', $page = 1, $perPage = 20)
+{
     $db = Database::getConnection();
     $offset = ($page - 1) * $perPage;
-    
+
     $sql = "SELECT * FROM contact_messages";
     $params = [];
+
     if (!empty($search)) {
-        $sql .= " WHERE name LIKE :search OR email LIKE :search OR message LIKE :search";
-        $params[':search'] = "%$search%";
+        $sql .= " WHERE name LIKE :nameSearch
+                  OR email LIKE :emailSearch
+                  OR message LIKE :messageSearch";
+
+        $params[':nameSearch'] = "%$search%";
+        $params[':emailSearch'] = "%$search%";
+        $params[':messageSearch'] = "%$search%";
     }
-    $sql .= " ORDER BY submitted_at DESC LIMIT :limit OFFSET :offset";
-    
+
+    $sql .= " ORDER BY submitted_at DESC LIMIT $perPage OFFSET $offset";
+
     $stmt = $db->prepare($sql);
+
     foreach ($params as $key => $val) {
         $stmt->bindValue($key, $val);
     }
-    $stmt->bindValue(':limit', $perPage, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
     $stmt->execute();
-    $messages = $stmt->fetchAll();
-    
-    // Get total count
+    $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Count query
     $countSql = "SELECT COUNT(*) as total FROM contact_messages";
-    if (!empty($search)) {
-        $countSql .= " WHERE name LIKE :search OR email LIKE :search OR message LIKE :search";
-    }
-    $countStmt = $db->prepare($countSql);
-    if (!empty($search)) {
-        $countStmt->bindValue(':search', "%$search%");
-    }
-    $countStmt->execute();
-    $total = $countStmt->fetch()['total'];
     
+    if (!empty($search)) {
+        $countSql .= " WHERE name LIKE :nameSearch
+                       OR email LIKE :emailSearch
+                       OR message LIKE :messageSearch";
+    }
+
+    $countStmt = $db->prepare($countSql);
+
+    if (!empty($search)) {
+        $countStmt->bindValue(':nameSearch', "%$search%");
+        $countStmt->bindValue(':emailSearch', "%$search%");
+        $countStmt->bindValue(':messageSearch', "%$search%");
+    }
+
+    $countStmt->execute();
+    $total = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+
     return [
         'messages' => $messages,
         'total' => $total,
