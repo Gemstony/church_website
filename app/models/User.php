@@ -15,7 +15,17 @@ class User {
         $hashed = password_hash($password, PASSWORD_BCRYPT);
         $sql = "INSERT INTO users (email, password_hash, full_name, role) VALUES (?, ?, ?, 'member')";
         $stmt = $db->prepare($sql);
-        return $stmt->execute([$email, $hashed, $full_name]);
+        if (!$stmt->execute([$email, $hashed, $full_name])) {
+            return false;
+        }
+        $user = [
+            'id' => $db->lastInsertId(),
+            'email' => $email,
+            'full_name' => $full_name,
+            'role' => 'member',
+            'profile_pic' => null
+        ];
+        return $user;
     }
     
     /**

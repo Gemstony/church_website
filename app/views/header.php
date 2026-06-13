@@ -127,7 +127,7 @@ $logoPath = !empty($settings['logo_path']) ? APP_URL . '/' . $settings['logo_pat
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg " style="background-color: #982A22;">
+    <nav class="navbar navbar-expand-lg " style="background-color: <?php echo $primaryColor; ?>;">
         <div class="container">
             <a class="navbar-brand" href="<?php echo APP_URL; ?>/index.php">
                 <?php if ($logoPath): ?>
@@ -135,9 +135,10 @@ $logoPath = !empty($settings['logo_path']) ? APP_URL . '/' . $settings['logo_pat
                 <?php else: ?>
                     <?php echo Security::escape($siteName); ?>
                 <?php endif; ?>
+                <strong class="text-white">CGMSF</strong>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggler bg-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon bg-white"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
@@ -154,7 +155,7 @@ $logoPath = !empty($settings['logo_path']) ? APP_URL . '/' . $settings['logo_pat
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="<?php echo APP_URL; ?>/dashboard.php">Dashboard</a></li>
                                 <?php if (Auth::isAdmin()): ?>
-                                    <li><a class="dropdown-item" href="<?php echo APP_URL; ?>/admin/settings.php">Admin
+                                    <li><a class="dropdown-item" href="<?php echo APP_URL; ?>/admin/index.php">Admin
                                             Panel</a></li>
                                 <?php endif; ?>
                                 <li>
@@ -164,8 +165,8 @@ $logoPath = !empty($settings['logo_path']) ? APP_URL . '/' . $settings['logo_pat
                             </ul>
                         </li>
                     <?php else: ?>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo APP_URL; ?>/login.php">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="<?php echo APP_URL; ?>/signup.php">Sign Up</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="<?php echo APP_URL; ?>/login.php">Login</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="<?php echo APP_URL; ?>/signup.php">Sign Up</a></li>
                     <?php endif; ?>
                 </ul>
             </div>

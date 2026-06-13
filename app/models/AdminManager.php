@@ -36,7 +36,7 @@ class AdminManager {
         $offset = ($page - 1) * $perPage;
         
         $sql = "SELECT id, email, full_name, role, profile_pic, is_active, created_at 
-                FROM users WHERE role = 'member'";
+                FROM users";
         $params = [];
         
         if (!empty($search)) {
@@ -56,7 +56,7 @@ class AdminManager {
         $members = $stmt->fetchAll();
         
         // Get total count for pagination
-        $countSql = "SELECT COUNT(*) as total FROM users WHERE role = 'member'";
+        $countSql = "SELECT COUNT(*) as total FROM users";
         if (!empty($search)) {
             $countSql .= " AND (full_name LIKE :search OR email LIKE :search)";
         }

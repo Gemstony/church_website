@@ -143,7 +143,13 @@ include __DIR__ . '/includes/header.php';
                         </td>
                         <td><?php echo Security::escape($member['full_name']); ?></td>
                         <td><?php echo Security::escape($member['email']); ?></td>
-                        <td><span class="badge bg-info"><?php echo ucfirst($member['role']); ?></span></td>
+                        <td>
+                             <?php if ($member['role'] == 'admin'): ?>
+                                <span class="badge bg-danger">Admin</span>
+                            <?php else: ?>
+                                <span class="badge bg-info">Member</span>
+                            <?php endif; ?>
+                        </td>
                         <td>
                             <?php if ($member['is_active']): ?>
                                 <span class="badge bg-success">Active</span>

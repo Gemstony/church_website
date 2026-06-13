@@ -10,7 +10,6 @@ if (Auth::isLoggedIn()) {
 }
 
 $error = '';
-$success = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
         $error = 'Invalid request.';
@@ -29,9 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif ($password !== $confirm) {
             $error = 'Passwords do not match.';
         } else {
-            if (User::register($email, $password, $full_name)) {
-                $success = 'Registration successful! You can now login.';
-                // Auto-login optional, but we redirect to login page.
+            $user = User::register($email, $password, $full_name);
+            if ($user) {
+                Auth::login($user);
+                header('Location: ' . APP_URL . '/dashboard.php');
+                exit;
             } else {
                 $error = 'Email already registered.';
             }
@@ -46,9 +47,6 @@ include __DIR__ . '/../app/views/header.php';
         <h2>Sign Up</h2>
         <?php if ($error): ?>
             <div class="alert alert-danger"><?php echo Security::escape($error); ?></div>
-        <?php endif; ?>
-        <?php if ($success): ?>
-            <div class="alert alert-success"><?php echo Security::escape($success); ?> <a href="login.php">Login now</a></div>
         <?php endif; ?>
         <form method="POST">
             <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">

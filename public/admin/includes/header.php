@@ -96,7 +96,7 @@ require_once __DIR__ . '/../../../app/helpers/Security.php';
 <nav class="sidebar" id="sidebar">
     <div class="position-sticky pt-3">
         <div class="px-3 mb-3">
-            <h5 class="text-dark">Admin Menu</h5>
+            <h5 class="text-dark">CGMSF Admin</h5>
         </div>
         <ul class="nav flex-column">
             <li class="nav-item"><a class="nav-link text-dark" href="index.php"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
@@ -119,7 +119,7 @@ require_once __DIR__ . '/../../../app/helpers/Security.php';
         <button class="btn btn-link" type="button" id="sidebarToggleBtn">
             <i class="fas fa-bars fa-lg"></i>
         </button>
-        <span class="navbar-brand mb-0 h5">Admin Panel</span>
+        <span class="navbar-brand mb-0 h5">CGMSF Admin</span>
         <div></div> <!-- placeholder for flex alignment -->
     </div>
 </nav>
