@@ -111,6 +111,11 @@ $logoPath = !empty($settings['logo_path']) ? APP_URL . '/' . $settings['logo_pat
             font-size: 0.8rem;
         }
 
+        .nav-item{
+            color: #fff !important;
+        }
+
+
         @media (max-width: 768px) {
             .footer-container {
                 flex-direction: column;
@@ -122,7 +127,7 @@ $logoPath = !empty($settings['logo_path']) ? APP_URL . '/' . $settings['logo_pat
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg " style="background-color: #982A22;">
         <div class="container">
             <a class="navbar-brand" href="<?php echo APP_URL; ?>/index.php">
                 <?php if ($logoPath): ?>
@@ -136,14 +141,14 @@ $logoPath = !empty($settings['logo_path']) ? APP_URL . '/' . $settings['logo_pat
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="<?php echo APP_URL; ?>/index.php">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="<?php echo APP_URL; ?>/about.php">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="<?php echo APP_URL; ?>/events.php">Events</a></li>
-                    <li class="nav-item"><a class="nav-link" href="<?php echo APP_URL; ?>/media.php">Media</a></li>
-                    <li class="nav-item"><a class="nav-link" href="<?php echo APP_URL; ?>/contact.php">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="<?php echo APP_URL; ?>/index.php">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="<?php echo APP_URL; ?>/about.php">About</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="<?php echo APP_URL; ?>/events.php">Events</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="<?php echo APP_URL; ?>/media.php">Media</a></li>
+                    <li class="nav-item"><a class="nav-link text-white" href="<?php echo APP_URL; ?>/contact.php">Contact</a></li>
                     <?php if (Auth::isLoggedIn()): ?>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown">
                                 <?php echo Security::escape($_SESSION['user_name']); ?>
                             </a>
                             <ul class="dropdown-menu">
