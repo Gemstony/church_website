@@ -352,8 +352,26 @@ include __DIR__ . '/includes/header.php';
         </div>
     </div>
 
-    <button type="submit" name="update_settings" class="btn btn-primary">Save All Settings</button>
+    <button type="submit" name="update_settings" id="saveSettingsBtn" class="btn btn-primary">
+        <span id="saveSettingsText">Save All Settings</span>
+        <span id="saveSettingsSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
+    </button>
     <a href="<?php echo APP_URL; ?>/admin/" class="btn btn-secondary">Back to Admin Dashboard</a>
 </form>
+
+<script>
+    const settingsForm = document.querySelector('form[method="POST"]');
+    const saveSettingsBtn = document.getElementById('saveSettingsBtn');
+    const saveSettingsText = document.getElementById('saveSettingsText');
+    const saveSettingsSpinner = document.getElementById('saveSettingsSpinner');
+
+    if (settingsForm && saveSettingsBtn) {
+        settingsForm.addEventListener('submit', function () {
+            saveSettingsBtn.disabled = true;
+            saveSettingsText.textContent = 'Saving...';
+            saveSettingsSpinner.classList.remove('d-none');
+        });
+    }
+</script>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>
