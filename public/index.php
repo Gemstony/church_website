@@ -208,7 +208,8 @@ include __DIR__ . '/../app/views/header.php';
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card shadow-sm text-center py-4">
-                <h1 class="mb-0" style="color: <?php echo $primaryColor; ?>;">CHRIST GOSPEL MESSENGERS STUDENTS FELLOWSHIP (CGMSF)</h1>
+                <h1 class="mb-0" style="color: <?php echo $primaryColor; ?>;">CHRIST GOSPEL MESSENGERS STUDENTS
+                    FELLOWSHIP (CGMSF)</h1>
             </div>
         </div>
     </div>
@@ -254,7 +255,7 @@ include __DIR__ . '/../app/views/header.php';
                 <p>Media Items</p>
             </div>
         </div>
-        
+
     </div>
 </div>
 
@@ -301,7 +302,8 @@ include __DIR__ . '/../app/views/header.php';
             <div class="ministry-card card text-center p-3">
                 <div class="card-body"><i class="fas fa-child fa-3x" style="color:var(--primary);"></i>
                     <h5 class="mt-3">
-                        <?php echo Security::escape($settings['ministry_1_name'] ?? 'Children’s Ministry'); ?></h5>
+                        <?php echo Security::escape($settings['ministry_1_name'] ?? 'Children’s Ministry'); ?>
+                    </h5>
                     <p><?php echo Security::escape($settings['ministry_1_desc'] ?? ''); ?></p>
                 </div>
             </div>
@@ -328,7 +330,8 @@ include __DIR__ . '/../app/views/header.php';
             <div class="ministry-card card text-center p-3">
                 <div class="card-body"><i class="fas fa-globe fa-3x" style="color:var(--primary);"></i>
                     <h5 class="mt-3">
-                        <?php echo Security::escape($settings['ministry_4_name'] ?? 'Outreach & Missions'); ?></h5>
+                        <?php echo Security::escape($settings['ministry_4_name'] ?? 'Outreach & Missions'); ?>
+                    </h5>
                     <p><?php echo Security::escape($settings['ministry_4_desc'] ?? ''); ?></p>
                 </div>
             </div>
@@ -388,14 +391,16 @@ include __DIR__ . '/../app/views/header.php';
             <div class="carousel-item">
                 <div class="testimonial-card"><i class="fas fa-quote-left"></i>
                     <p class="mt-3">
-                        <?php echo Security::escape($settings['testimonial_2_text'] ?? 'Amazing community.'); ?></p>
+                        <?php echo Security::escape($settings['testimonial_2_text'] ?? 'Amazing community.'); ?>
+                    </p>
                     <h5>- <?php echo Security::escape($settings['testimonial_2_name'] ?? 'Jane Smith'); ?></h5>
                 </div>
             </div>
             <div class="carousel-item">
                 <div class="testimonial-card"><i class="fas fa-quote-left"></i>
                     <p class="mt-3">
-                        <?php echo Security::escape($settings['testimonial_3_text'] ?? 'Love the worship.'); ?></p>
+                        <?php echo Security::escape($settings['testimonial_3_text'] ?? 'Love the worship.'); ?>
+                    </p>
                     <h5>- <?php echo Security::escape($settings['testimonial_3_name'] ?? 'Michael Johnson'); ?></h5>
                 </div>
             </div>
@@ -453,12 +458,54 @@ include __DIR__ . '/../app/views/header.php';
 
 
 <!-- Social Icons (if any) -->
-<?php if (!empty($settings['facebook_url']) || !empty($settings['youtube_url'])): ?>
+<!-- Social Icons -->
+<?php
+$hasSocial = (
+    !empty($settings['facebook_url']) ||
+    !empty($settings['youtube_url']) ||
+    !empty($settings['instagram_url']) ||
+    !empty($settings['whatsapp_url']) ||
+    !empty($settings['tiktok_url'])
+);
+?>
+<?php if ($hasSocial): ?>
     <div class="container text-center my-4">
-        <?php if (!empty($settings['facebook_url'])): ?><a href="<?php echo Security::escape($settings['facebook_url']); ?>"
-                target="_blank" class="mx-2"><i class="fab fa-facebook fa-2x"></i></a><?php endif; ?>
-        <?php if (!empty($settings['youtube_url'])): ?><a href="<?php echo Security::escape($settings['youtube_url']); ?>"
-                target="_blank" class="mx-2"><i class="fab fa-youtube fa-2x"></i></a><?php endif; ?>
+        <div class="social-icons">
+            <?php if (!empty($settings['facebook_url'])): ?>
+                <a href="<?php echo Security::escape($settings['facebook_url']); ?>" target="_blank" class="mx-2"
+                    aria-label="Facebook">
+                    <i class="fab fa-facebook fa-2x"></i>
+                </a>
+            <?php endif; ?>
+
+            <?php if (!empty($settings['youtube_url'])): ?>
+                <a href="<?php echo Security::escape($settings['youtube_url']); ?>" target="_blank" class="mx-2"
+                    aria-label="YouTube">
+                    <i class="fab fa-youtube fa-2x"></i>
+                </a>
+            <?php endif; ?>
+
+            <?php if (!empty($settings['instagram_url'])): ?>
+                <a href="<?php echo Security::escape($settings['instagram_url']); ?>" target="_blank" class="mx-2"
+                    aria-label="Instagram">
+                    <i class="fab fa-instagram fa-2x"></i>
+                </a>
+            <?php endif; ?>
+
+            <?php if (!empty($settings['whatsapp_url'])): ?>
+                <a href="<?php echo Security::escape($settings['whatsapp_url']); ?>" target="_blank" class="mx-2"
+                    aria-label="WhatsApp">
+                    <i class="fab fa-whatsapp fa-2x"></i>
+                </a>
+            <?php endif; ?>
+
+            <?php if (!empty($settings['tiktok_url'])): ?>
+                <a href="<?php echo Security::escape($settings['tiktok_url']); ?>" target="_blank" class="mx-2"
+                    aria-label="TikTok">
+                    <i class="fab fa-tiktok fa-2x"></i>
+                </a>
+            <?php endif; ?>
+        </div>
     </div>
 <?php endif; ?>
 

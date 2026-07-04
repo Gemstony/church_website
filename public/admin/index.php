@@ -29,6 +29,13 @@ include __DIR__ . '/includes/header.php';
     .stat-card { transition: transform 0.2s; }
     .stat-card:hover { transform: translateY(-5px); }
     .activity-list { max-height: 300px; overflow-y: auto; }
+
+    .chart-container {
+    position: relative;
+    height: 40vh; /* Sets height to 40% of the viewport height */
+    width: 100%;  /* Allows the chart to be fully responsive width-wise */
+}
+
 </style>
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -102,8 +109,8 @@ include __DIR__ . '/includes/header.php';
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">Member Growth (Last 6 Months)</div>
-            <div class="card-body">
-                <canvas id="memberChart" height="200"></canvas>
+            <div class="card-body chart-container">
+                <canvas id="memberChart" ></canvas>
                 <div id="memberChartError" class="text-danger small mt-2" style="display:none;"></div>
             </div>
         </div>
@@ -111,8 +118,8 @@ include __DIR__ . '/includes/header.php';
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">Event Registrations (Last 6 Months)</div>
-            <div class="card-body">
-                <canvas id="registrationChart" height="200"></canvas>
+            <div class="card-body chart-container">
+                <canvas id="registrationChart" ></canvas>
                 <div id="regChartError" class="text-danger small mt-2" style="display:none;"></div>
             </div>
         </div>

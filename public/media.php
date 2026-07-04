@@ -29,7 +29,7 @@ include __DIR__ . '/../app/views/header.php';
         height: 220px;
         object-fit: cover;
         display: block;
-        pointer-events: none; /* makes whole card clickable */
+        pointer-events: none;
     }
     .gallery-caption {
         padding: 12px;
@@ -128,7 +128,7 @@ include __DIR__ . '/../app/views/header.php';
     </div>
 <?php endif; ?>
 
-<!-- Lightbox Modal (improved with video stop) -->
+<!-- Lightbox Modal -->
 <div class="modal fade" id="mediaModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
@@ -178,7 +178,10 @@ include __DIR__ . '/../app/views/header.php';
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Upload</button>
+                    <button type="submit" class="btn btn-primary" id="publicUploadBtn">
+                        <span id="publicUploadText">Upload</span>
+                        <span id="publicUploadSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+                    </button>
                 </div>
             </form>
         </div>
@@ -187,7 +190,7 @@ include __DIR__ . '/../app/views/header.php';
 <?php endif; ?>
 
 <script>
-// Lightbox modal population with improved video stop
+// Lightbox modal population with video stop
 const mediaModal = document.getElementById('mediaModal');
 if (mediaModal) {
     mediaModal.addEventListener('show.bs.modal', function (event) {
@@ -214,7 +217,6 @@ if (mediaModal) {
         }
     });
     
-    // Stop video playback when modal is closed
     mediaModal.addEventListener('hidden.bs.modal', function () {
         const mediaContainer = document.getElementById('modalMedia');
         const video = mediaContainer.querySelector('video');
@@ -222,7 +224,7 @@ if (mediaModal) {
             video.pause();
             video.currentTime = 0;
         }
-        mediaContainer.innerHTML = ''; // Clear to release resources
+        mediaContainer.innerHTML = '';
     });
 }
 
@@ -248,11 +250,18 @@ if (deleteBtn) {
     });
 }
 
-// Upload form handling
+// Upload form handling with spinner
 const uploadForm = document.getElementById('uploadForm');
 if (uploadForm) {
     uploadForm.addEventListener('submit', function(e) {
         e.preventDefault();
+        const btn = document.getElementById('publicUploadBtn');
+        const textSpan = document.getElementById('publicUploadText');
+        const spinner = document.getElementById('publicUploadSpinner');
+        btn.disabled = true;
+        textSpan.textContent = 'Uploading...';
+        spinner.classList.remove('d-none');
+
         const formData = new FormData(this);
         fetch('api/upload-media.php', {
             method: 'POST',
@@ -266,10 +275,16 @@ if (uploadForm) {
                 setTimeout(() => location.reload(), 1500);
             } else {
                 msgDiv.innerHTML = '<div class="alert alert-danger">' + data.error + '</div>';
+                btn.disabled = false;
+                textSpan.textContent = 'Upload';
+                spinner.classList.add('d-none');
             }
         })
         .catch(err => {
             document.getElementById('uploadMsg').innerHTML = '<div class="alert alert-danger">Error uploading file</div>';
+            btn.disabled = false;
+            textSpan.textContent = 'Upload';
+            spinner.classList.add('d-none');
         });
     });
 }

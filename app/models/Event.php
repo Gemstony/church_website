@@ -57,13 +57,16 @@ class Event
     /**
      * Create or update event (admin)
      */
-    public static function save($data)
-    {
-        $db = Database::getConnection();
+/**
+ * Create or update event (admin)
+ */
+public static function save($data)
+{
+    $db = Database::getConnection();
 
-        if (isset($data['id']) && $data['id']) {
-            // UPDATE: only include fields that exist in the table
-            $sql = "UPDATE events SET 
+    if (isset($data['id']) && $data['id']) {
+        // UPDATE
+        $sql = "UPDATE events SET 
                 title = :title, 
                 description = :description, 
                 event_date = :event_date, 
@@ -71,32 +74,32 @@ class Event
                 location = :location, 
                 image = :image 
                 WHERE id = :id";
-            $stmt = $db->prepare($sql);
-            return $stmt->execute([
-                ':id' => $data['id'],
-                ':title' => $data['title'],
-                ':description' => $data['description'],
-                ':event_date' => $data['event_date'],
-                ':event_end_date' => $data['event_end_date'],
-                ':location' => $data['location'],
-                ':image' => $data['image']  // can be null
-            ]);
-        } else {
-            // INSERT: include created_by
-            $sql = "INSERT INTO events (title, description, event_date, event_end_date, location, image, created_by) 
+        $stmt = $db->prepare($sql);
+        return $stmt->execute([
+            ':id' => $data['id'],
+            ':title' => $data['title'],
+            ':description' => $data['description'],
+            ':event_date' => $data['event_date'],
+            ':event_end_date' => $data['event_end_date'],
+            ':location' => $data['location'],
+            ':image' => $data['image'] ?? null  // Allow null
+        ]);
+    } else {
+        // INSERT
+        $sql = "INSERT INTO events (title, description, event_date, event_end_date, location, image, created_by) 
                 VALUES (:title, :description, :event_date, :event_end_date, :location, :image, :created_by)";
-            $stmt = $db->prepare($sql);
-            return $stmt->execute([
-                ':title' => $data['title'],
-                ':description' => $data['description'],
-                ':event_date' => $data['event_date'],
-                ':event_end_date' => $data['event_end_date'],
-                ':location' => $data['location'],
-                ':image' => $data['image'],
-                ':created_by' => $data['created_by']
-            ]);
-        }
+        $stmt = $db->prepare($sql);
+        return $stmt->execute([
+            ':title' => $data['title'],
+            ':description' => $data['description'],
+            ':event_date' => $data['event_date'],
+            ':event_end_date' => $data['event_end_date'],
+            ':location' => $data['location'],
+            ':image' => $data['image'] ?? null,  // Allow null
+            ':created_by' => $data['created_by']
+        ]);
     }
+}
 
 
     /**

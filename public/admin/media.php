@@ -179,7 +179,7 @@ include __DIR__ . '/includes/header.php';
                 <h5 class="modal-title">Edit Media</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form method="POST">
+            <form method="POST" onsubmit="disableEditButton(this)">
                 <div class="modal-body">
                     <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
                     <input type="hidden" name="id" id="edit_id">
@@ -194,14 +194,17 @@ include __DIR__ . '/includes/header.php';
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" name="edit_media" class="btn btn-primary">Save Changes</button>
+                    <button type="submit" name="edit_media" class="btn btn-primary" id="editMediaBtn">
+                        <span id="editMediaText">Save Changes</span>
+                        <span id="editMediaSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<!-- Upload Modal (same as before) -->
+<!-- Upload Modal -->
 <div class="modal fade" id="uploadModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -227,7 +230,10 @@ include __DIR__ . '/includes/header.php';
                         <input type="file" name="media_file" id="mediaFile" class="d-none" accept="image/*,video/mp4,video/webm" required>
                     </div>
                     <div class="mt-3" id="fileNameDisplay"></div>
-                    <button type="submit" class="btn btn-primary mt-3 w-100">Upload</button>
+                    <button type="submit" class="btn btn-primary mt-3 w-100" id="uploadMediaBtn">
+                        <span id="uploadMediaText">Upload</span>
+                        <span id="uploadMediaSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+                    </button>
                 </form>
             </div>
         </div>
@@ -235,6 +241,17 @@ include __DIR__ . '/includes/header.php';
 </div>
 
 <script>
+    // Function to disable edit button
+    function disableEditButton(form) {
+        const btn = document.getElementById('editMediaBtn');
+        if (btn) {
+            btn.disabled = true;
+            document.getElementById('editMediaText').textContent = 'Saving...';
+            document.getElementById('editMediaSpinner').classList.remove('d-none');
+        }
+        return true;
+    }
+
     // Populate view modal
     const viewModal = document.getElementById('mediaViewModal');
     if (viewModal) {
@@ -265,6 +282,13 @@ include __DIR__ . '/includes/header.php';
         document.getElementById('edit_id').value = button.dataset.id;
         document.getElementById('edit_title').value = button.dataset.title;
         document.getElementById('edit_description').value = button.dataset.description;
+        // Reset button state
+        const btn = document.getElementById('editMediaBtn');
+        if (btn) {
+            btn.disabled = false;
+            document.getElementById('editMediaText').textContent = 'Save Changes';
+            document.getElementById('editMediaSpinner').classList.add('d-none');
+        }
     });
 
     // File upload preview
@@ -273,11 +297,18 @@ include __DIR__ . '/includes/header.php';
         document.getElementById('fileNameDisplay').innerHTML = `<div class="alert alert-info">Selected: ${fileName}</div>`;
     });
 
-    // Upload form handler
+    // Upload form handler with spinner
     const uploadForm = document.getElementById('uploadForm');
     if (uploadForm) {
         uploadForm.addEventListener('submit', function(e) {
             e.preventDefault();
+            const btn = document.getElementById('uploadMediaBtn');
+            const textSpan = document.getElementById('uploadMediaText');
+            const spinner = document.getElementById('uploadMediaSpinner');
+            btn.disabled = true;
+            textSpan.textContent = 'Uploading...';
+            spinner.classList.remove('d-none');
+
             const formData = new FormData(this);
             fetch('<?php echo APP_URL; ?>/api/upload-media.php', {
                 method: 'POST',
@@ -291,10 +322,16 @@ include __DIR__ . '/includes/header.php';
                     setTimeout(() => location.reload(), 1500);
                 } else {
                     msgDiv.innerHTML = '<div class="alert alert-danger">' + data.error + '</div>';
+                    btn.disabled = false;
+                    textSpan.textContent = 'Upload';
+                    spinner.classList.add('d-none');
                 }
             })
             .catch(() => {
                 document.getElementById('uploadMsg').innerHTML = '<div class="alert alert-danger">Upload failed. Try again.</div>';
+                btn.disabled = false;
+                textSpan.textContent = 'Upload';
+                spinner.classList.add('d-none');
             });
         });
     }
