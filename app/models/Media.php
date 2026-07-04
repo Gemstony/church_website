@@ -45,6 +45,20 @@ class Media
     }
 
     /**
+     * Update media title and description
+     */
+    public static function update($id, $title, $description)
+    {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("UPDATE media_gallery SET title = :title, description = :description WHERE id = :id");
+        return $stmt->execute([
+            ':title' => $title,
+            ':description' => $description,
+            ':id' => $id
+        ]);
+    }
+
+    /**
      * Delete media (admin only)
      */
     public static function delete($id)

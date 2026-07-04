@@ -168,6 +168,21 @@ include __DIR__ . '/../app/views/header.php';
     .btn-primary:hover {
         background: var(--secondary);
     }
+
+    .social-icons a {
+    color: #333;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+.social-icons a:hover {
+    transform: translateY(-3px);
+    opacity: 0.8;
+}
+.social-icons .fa-facebook:hover { color: #1877f2; }
+.social-icons .fa-youtube:hover { color: #ff0000; }
+.social-icons .fa-instagram:hover { color: #e4405f; }
+.social-icons .fa-whatsapp:hover { color: #25d366; }
+.social-icons .fa-tiktok:hover { color: #000000; }
 </style>
 
 <!-- Hero Slider (unchanged, works) -->

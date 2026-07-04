@@ -27,22 +27,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_media'])) {
 }
 
 // Handle edit media (update title & description)
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_media'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_POST['edit_media']) || (isset($_POST['id']) && isset($_POST['title']) && isset($_POST['description'])))) {
     if (!Security::verifyCSRFToken($_POST['csrf_token'] ?? '')) {
         $error = 'Invalid CSRF token.';
     } else {
-        $id = (int)$_POST['id'];
-        $title = trim($_POST['title']);
-        $description = trim($_POST['description']);
-        if (empty($title)) {
+        $id = (int)($_POST['id'] ?? 0);
+        $title = trim($_POST['title'] ?? '');
+        $description = trim($_POST['description'] ?? '');
+
+        if ($id <= 0) {
+            $error = 'Invalid media ID.';
+        } elseif ($title === '') {
             $error = 'Title is required.';
         } else {
-            $db = Database::getConnection();
-            $stmt = $db->prepare("UPDATE media_gallery SET title = :title, description = :description WHERE id = :id");
-            if ($stmt->execute([':title' => $title, ':description' => $description, ':id' => $id])) {
-                $success = 'Media updated successfully.';
-            } else {
-                $error = 'Database error.';
+            try {
+                if (Media::update($id, $title, $description)) {
+                    $success = 'Media updated successfully.';
+                } else {
+                    $error = 'Database error.';
+                }
+            } catch (Throwable $e) {
+                $error = 'Database error: ' . $e->getMessage();
             }
         }
     }
@@ -179,7 +184,7 @@ include __DIR__ . '/includes/header.php';
                 <h5 class="modal-title">Edit Media</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form method="POST" onsubmit="disableEditButton(this)">
+            <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" onsubmit="disableEditButton(this)">
                 <div class="modal-body">
                     <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
                     <input type="hidden" name="id" id="edit_id">

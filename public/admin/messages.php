@@ -114,7 +114,7 @@ include __DIR__ . '/includes/header.php';
                         <td>
                             <?php echo Security::escape(substr($msg['message'], 0, 80)); ?>
                             <?php if (strlen($msg['message']) > 80): ?>...<?php endif; ?>
-                            <button class="btn btn-sm btn-link p-0 ms-2 view-message" data-id="<?php echo $msg['id']; ?>" data-name="<?php echo Security::escape($msg['name']); ?>" data-email="<?php echo Security::escape($msg['email']); ?>" data-message="<?php echo Security::escape($msg['message']); ?>" data-bs-toggle="modal" data-bs-target="#messageModal">View full</button>
+                            <button class="btn btn-sm  ms-2 view-message bg-info" data-id="<?php echo $msg['id']; ?>" data-name="<?php echo Security::escape($msg['name']); ?>" data-email="<?php echo Security::escape($msg['email']); ?>" data-message="<?php echo Security::escape($msg['message']); ?>" data-bs-toggle="modal" data-bs-target="#messageModal">View full</button>
                         </td>
                         <td><?php echo date('M j, Y g:i A', strtotime($msg['submitted_at'])); ?></td>
                         <td>

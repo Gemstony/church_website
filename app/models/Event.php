@@ -62,9 +62,21 @@ class Event
  */
 public static function save($data)
 {
-    $db = Database::getConnection();
+    if (!is_array($data)) {
+        return false;
+    }
 
-    if (isset($data['id']) && $data['id']) {
+    $db = Database::getConnection();
+    $id = isset($data['id']) ? (int)$data['id'] : 0;
+    $title = trim((string)($data['title'] ?? ''));
+    $description = trim((string)($data['description'] ?? ''));
+    $eventDate = $data['event_date'] ?? null;
+    $eventEndDate = $data['event_end_date'] ?? null;
+    $location = trim((string)($data['location'] ?? ''));
+    $image = $data['image'] ?? null;
+    $createdBy = $data['created_by'] ?? null;
+
+    if ($id) {
         // UPDATE
         $sql = "UPDATE events SET 
                 title = :title, 
@@ -76,13 +88,13 @@ public static function save($data)
                 WHERE id = :id";
         $stmt = $db->prepare($sql);
         return $stmt->execute([
-            ':id' => $data['id'],
-            ':title' => $data['title'],
-            ':description' => $data['description'],
-            ':event_date' => $data['event_date'],
-            ':event_end_date' => $data['event_end_date'],
-            ':location' => $data['location'],
-            ':image' => $data['image'] ?? null  // Allow null
+            ':id' => $id,
+            ':title' => $title,
+            ':description' => $description,
+            ':event_date' => $eventDate,
+            ':event_end_date' => $eventEndDate,
+            ':location' => $location,
+            ':image' => $image
         ]);
     } else {
         // INSERT
@@ -90,13 +102,13 @@ public static function save($data)
                 VALUES (:title, :description, :event_date, :event_end_date, :location, :image, :created_by)";
         $stmt = $db->prepare($sql);
         return $stmt->execute([
-            ':title' => $data['title'],
-            ':description' => $data['description'],
-            ':event_date' => $data['event_date'],
-            ':event_end_date' => $data['event_end_date'],
-            ':location' => $data['location'],
-            ':image' => $data['image'] ?? null,  // Allow null
-            ':created_by' => $data['created_by']
+            ':title' => $title,
+            ':description' => $description,
+            ':event_date' => $eventDate,
+            ':event_end_date' => $eventEndDate,
+            ':location' => $location,
+            ':image' => $image,
+            ':created_by' => $createdBy
         ]);
     }
 }

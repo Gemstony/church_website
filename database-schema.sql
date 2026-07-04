@@ -155,3 +155,26 @@ INSERT INTO `settings` (`setting_key`, `setting_value`, `setting_type`) VALUES
 -- Password = "Admin123!" (hashed with PHP password_hash())
 INSERT INTO `users` (`email`, `password_hash`, `full_name`, `role`) VALUES
 ('scar@gmail.com', '$2y$10$1vuhpzX2ln8gpiLvkZzwSeWiseE4Yxllx9/IoV9Aa9WStUKSJVWje', 'Super Admin', 'admin');
+
+
+
+-- Social Media URLs
+INSERT INTO `settings` (`setting_key`, `setting_value`, `setting_type`) VALUES
+('instagram_url', '', 'url'),
+('whatsapp_url', '', 'url'),
+('tiktok_url', '', 'url');
+
+-- Leaders (3)
+INSERT INTO `settings` (`setting_key`, `setting_value`, `setting_type`) VALUES
+('leader_1_image', '', 'image'),
+('leader_1_name', 'Pastor John Doe', 'text'),
+('leader_1_position', 'Senior Pastor', 'text'),
+('leader_1_quote', 'Leading with love and grace.', 'textarea'),
+('leader_2_image', '', 'image'),
+('leader_2_name', 'Pastor Jane Smith', 'text'),
+('leader_2_position', 'Worship Leader', 'text'),
+('leader_2_quote', 'Worship is the heartbeat of our church.', 'textarea'),
+('leader_3_image', '', 'image'),
+('leader_3_name', 'Elder Michael Brown', 'text'),
+('leader_3_position', 'Youth Pastor', 'text'),
+('leader_3_quote', 'Investing in the next generation.', 'textarea');
